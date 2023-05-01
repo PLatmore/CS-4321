@@ -1,36 +1,13 @@
+package CS;
+
 public class Customer {
-    private int id;
-    private String firstName;
-    private String lastName;
+    private String name;
 
-    public Customer(int id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Customer(String name) {
+        this.name = name;
     }
 
-    // getters and setters for all fields
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getName() {
+        return name;
     }
 }
