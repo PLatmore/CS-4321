@@ -1,74 +1,59 @@
 package CS;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
+import java.util.*;
 
 public class Store {
     private String name;
     private int id;
-	private Scanner scanner;
+    private Map<Product, Integer> inventory;
 
     public Store(String name, int id) {
         this.name = name;
         this.id = id;
+        this.inventory = new HashMap<>();
     }
 
-    public void processOrder() {
-        scanner = new Scanner(System.in);
+    public void addToInventory(Product product, int quantity) {
+        inventory.put(product, inventory.getOrDefault(product, 0) + quantity);
+    }
 
-        System.out.print("Enter your name: ");
-        String customerName = scanner.nextLine();
-        new Customer(customerName);
+    public boolean hasProductInInventory(Product product) {
+        return inventory.containsKey(product) && inventory.get(product) > 0;
+    }
 
-        Order order = new Order();
-        boolean addMoreProducts = true;
-
-        while (addMoreProducts) {
-            System.out.print("Enter product name: ");
-            String productName = scanner.nextLine();
-            System.out.print("Enter product price: ");
-            double productPrice = scanner.nextDouble();
-            scanner.nextLine(); // Consume newline left-over
-            System.out.print("Is this a food item? (yes/no): ");
-            boolean isFoodItem = scanner.nextLine().equalsIgnoreCase("yes");
-            System.out.print("Enter quantity: ");
-            int quantity = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
-            Product product = new Product(productName, productPrice, isFoodItem);
-            order.addProduct(product, quantity);
-
-            System.out.print("Do you want to add more products? (yes/no): ");
-            addMoreProducts = scanner.nextLine().equalsIgnoreCase("yes");
+    public void removeFromInventory(Product product, int quantity) {
+        if (hasProductInInventory(product)) {
+            inventory.put(product, inventory.get(product) - quantity);
         }
+    }
 
-        System.out.print("Do you want to pay for the order with SNAP? (yes/no): ");
-        boolean isUsingSnap = scanner.nextLine().equalsIgnoreCase("yes");
-
-        // Payment and receipt
-        Payment payment = new Payment(order, isUsingSnap);
-        System.out.println("\nRECEIPT");
-        System.out.println("Store Name: " + name);
-        System.out.println("Store ID: " + id);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println("Date: " + LocalDateTime.now().format(formatter));
-        System.out.println("\nItems Purchased:");
-        for (Product product : order.getProducts()) {
-            System.out.println("Product: " + product.getName() + ", Price: $" + product.getPrice() + ", Is Food Item: " + (product.isFoodItem() ? "Yes" : "No"));
+    public List<Product> searchProducts(String query) {
+        List<Product> matchingProducts = new ArrayList<>();
+        for (Product product : inventory.keySet()) {
+            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
+                matchingProducts.add(product);
+            }
         }
-        if (isUsingSnap) {
-            System.out.printf("SNAP Total: $%.2f%n", payment.getSnapTotal());
-            System.out.printf("Non-Food Subtotal: $%.2f%n", payment.getNonFoodSubtotal());
-        } else {
-            System.out.printf("Subtotal: $%.2f%n", order.calculateTotal());
-        }
-        System.out.printf("Tax: $%.2f%n", payment.getTax());
-        System.out.printf("Grand Total: $%.2f%n", payment.getGrandTotal());
-        System.out.println("\nThank you for your purchase!");
+        matchingProducts.sort(Comparator.comparing(Product::getName));
+        return matchingProducts;
     }
 
     public static void main(String[] args) {
-        Store store = new Store("Example Store", 12345);
-        store.processOrder();
+        // Add sample products to store
+        Store store = new Store("Super Store", 1);
+        Product apple = new Product("Apple", 0.5, true);
+        Product orange = new Product("Orange", 0.7, true);
+        Product shirt = new Product("Shirt", 10, false);
+        store.addToInventory(apple, 20);
+        store.addToInventory(orange, 20);
+        store.addToInventory(shirt, 10);
+
+        // Search for products containing 'ap'
+        List<Product> searchResults = store.searchProducts("ap");
+        System.out.println("Search results for 'ap':");
+        for (Product product : searchResults) {
+            System.out.println(" - " + product.getName() + ": $" + product.getPrice());
+        }
     }
 }
+

@@ -1,27 +1,19 @@
 package CS;
 
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Order {
-    private static AtomicLong orderIdCounter = new AtomicLong(100000);
-    private long id;
+    private int id;
     private List<Product> products;
+    private Payment payment;
 
-    public Order() {
-        this.id = orderIdCounter.incrementAndGet();
+    public Order(int id) {
+        this.id = id;
         this.products = new ArrayList<>();
     }
 
-    public void addProduct(Product product, int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            products.add(product);
-        }
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -29,8 +21,24 @@ public class Order {
         return products;
     }
 
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     public double calculateTotal() {
-        double total = 0;
+        double total = 0.0;
         for (Product product : products) {
             total += product.getPrice();
         }

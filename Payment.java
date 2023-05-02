@@ -1,54 +1,39 @@
 package CS;
 
 public class Payment {
-    private Order order;
-    private double tax;
-    private double grandTotal;
     private double snapTotal;
     private double nonFoodSubtotal;
-    private boolean isUsingSnap;
-    private static final double FOOD_TAX_RATE = 0.04;
-    private static final double NON_FOOD_TAX_RATE = 0.08;
+    private double tax;
+    private double grandTotal;
+    private boolean usingSnap;
 
-    public Payment(Order order, boolean isUsingSnap) {
-        this.order = order;
-        this.isUsingSnap = isUsingSnap;
-        this.snapTotal = calculateSnapTotal();
-        this.nonFoodSubtotal = order.calculateTotal() - snapTotal;
-        this.tax = calculateTax();
-        this.grandTotal = nonFoodSubtotal + tax;
+    public Payment(Order order, boolean usingSnap) {
+        this.usingSnap = usingSnap;
+        calculatePayment(order);
     }
 
-    private double calculateSnapTotal() {
-        double total = 0;
-        if (isUsingSnap) {
-            for (Product product : order.getProducts()) {
-                if (product.isFoodItem()) {
-                    total += product.getPrice();
-                }
-            }
-        }
-        return total;
-    }
+    private void calculatePayment(Order order) {
+        double foodSubtotal = 0;
+        double nonFoodSubtotal = 0;
 
-    private double calculateTax() {
-        double tax = 0;
         for (Product product : order.getProducts()) {
-            if (!product.isFoodItem()) {
-                tax += product.getPrice() * NON_FOOD_TAX_RATE;
-            } else if (!isUsingSnap) {
-                tax += product.getPrice() * FOOD_TAX_RATE;
+            if (product.isFoodItem()) {
+                foodSubtotal += product.getPrice();
+            } else {
+                nonFoodSubtotal += product.getPrice();
             }
         }
-        return tax;
-    }
 
-    public double getTax() {
-        return tax;
-    }
+        if (usingSnap) {
+            this.snapTotal = foodSubtotal;
+            this.nonFoodSubtotal = nonFoodSubtotal;
+            this.tax = nonFoodSubtotal * 0.08;
+        } else {
+            this.nonFoodSubtotal = foodSubtotal + nonFoodSubtotal;
+            this.tax = foodSubtotal * 0.04 + nonFoodSubtotal * 0.08;
+        }
 
-    public double getGrandTotal() {
-        return grandTotal;
+        this.grandTotal = nonFoodSubtotal + tax + (usingSnap ? 0 : foodSubtotal);
     }
 
     public double getSnapTotal() {
@@ -59,7 +44,16 @@ public class Payment {
         return nonFoodSubtotal;
     }
 
+    public double getTax() {
+        return tax;
+    }
+
+    public double getGrandTotal() {
+        return grandTotal;
+    }
+
     public boolean isUsingSnap() {
-        return isUsingSnap;
+        return usingSnap;
     }
 }
+
