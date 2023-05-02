@@ -9,7 +9,7 @@ public class Customer {
 
     public Customer(String name) {
         this.name = name;
-        this.orders = new ArrayList<>();
+        orders = new ArrayList<>();
     }
 
     public String getName() {

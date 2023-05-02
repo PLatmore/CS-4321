@@ -3,12 +3,12 @@ package CS;
 public class Product {
     private String name;
     private double price;
-    private boolean isFoodItem;
+    private boolean foodItem;
 
-    public Product(String name, double price, boolean isFoodItem) {
+    public Product(String name, double price, boolean foodItem) {
         this.name = name;
         this.price = price;
-        this.isFoodItem = isFoodItem;
+        this.foodItem = foodItem;
     }
 
     public String getName() {
@@ -20,7 +20,8 @@ public class Product {
     }
 
     public boolean isFoodItem() {
-        return isFoodItem;
+        return foodItem;
     }
 }
+
 
