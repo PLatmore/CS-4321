@@ -1,8 +1,5 @@
 package CS;
 
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,17 +9,19 @@ public class Store {
     private int id;
     private Scanner scanner;
 
-    // Add a list of customers
     private List<Customer> customers = new ArrayList<>();
+    private Inventory inventory;
+    private Manager manager;
 
     public Store(String name, int id) {
         this.name = name;
         this.id = id;
+        this.inventory = new Inventory();
+        this.manager = new Manager(inventory, customers);
+        scanner = new Scanner(System.in);
     }
 
     public void processOrder() {
-        scanner = new Scanner(System.in);
-
         System.out.print("Enter your name: ");
         String customerName = scanner.nextLine();
         Customer customer = new Customer(customerName);
@@ -34,13 +33,18 @@ public class Store {
         while (addMoreProducts) {
             System.out.print("Enter product name: ");
             String productName = scanner.nextLine();
+            System.out.print("Enter product manufacturer: ");
+            String productManufacturer = scanner.nextLine();
             System.out.print("Enter product price: ");
             double productPrice = scanner.nextDouble();
+            scanner.nextLine(); // Consume newline left-over
+            System.out.print("Enter product quantity: ");
+            int productQuantity = scanner.nextInt();
             scanner.nextLine(); // Consume newline left-over
             System.out.print("Is this a food item? (yes/no): ");
             boolean isFoodItem = scanner.nextLine().equalsIgnoreCase("yes");
 
-            Product product = new Product(productName, productPrice, isFoodItem);
+            Product product = new Product(productName, productManufacturer, productPrice, productQuantity, isFoodItem);
             order.addProduct(product);
 
             System.out.print("Add more products? (yes/no): ");
@@ -58,53 +62,84 @@ public class Store {
     }
 
     private void printReceipt(Customer customer, Order order) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
         System.out.println("\n--- Receipt ---");
-        System.out.println("Store: " + name + " | Store ID: " + id);
-        System.out.println("Date: " + now.format(formatter));
-        System.out.println("Customer: " + customer.getName());
-        System.out.println("\nItems Purchased:");
+        System.out.println("Customer Name: " + customer.getName());
+        System.out.println("Order ID: " + order.getId());
+        System.out.println("Products:");
         for (Product product : order.getProducts()) {
-            System.out.println(product.getName() + " - $" + product.getPrice());
+            System.out.printf("  - %s ($%.2f)%n", product.getName(), product.getPrice());
         }
-        System.out.println("\nSNAP Total: $" + order.getPayment().getSnapTotal());
-        System.out.println("Non-Food Subtotal: $" + order.getPayment().getNonFoodSubtotal());
-        System.out.println("Tax: $" + order.getPayment().getTax());
-        System.out.println("Grand Total: $" + order.getPayment().getGrandTotal());
+        System.out.printf("Subtotal: $%.2f%n", order.getSubtotal());
+        System.out.printf("Tax: $%.2f%n", order.getTax());
+        System.out.printf("Total: $%.2f%n", order.getTotal());
     }
+
     public void viewPreviousOrders(Customer customer) {
-        List<Order> orders = customer.getOrders();
-        if (orders.isEmpty()) {
-            System.out.println("No previous orders found.");
-            return;
-        }
-
-        // Sort orders in descending order
-        orders.sort((o1, o2) -> o2.getPayment().getPaymentTimestamp().compareTo(o1.getPayment().getPaymentTimestamp()));
-
-        System.out.println("Previous orders:");
-        for (int i = 0; i < orders.size(); i++) {
-            System.out.println((i + 1) + ". Order #" + (i + 1) + " - " + orders.get(i).getPayment().getPaymentTimestamp());
-        }
-
-        System.out.print("Select an order to view the receipt (1-" + orders.size() + "): ");
-        int orderIndex = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume newline left-over
-
-        if (orderIndex >= 0 && orderIndex < orders.size()) {
-            printReceipt(customer, orders.get(orderIndex));
-        } else {
-            System.out.println("Invalid order selection.");
+        System.out.println("\n--- Previous Orders ---");
+        for (Order order : customer.getOrders()) {
+            System.out.println("Order ID: " + order.getId());
+            System.out.println("Products:");
+            for (Product product : order.getProducts()) {
+                System.out.printf("  - %s ($%.2f)%n", product.getName(), product.getPrice());
+            }
+            System.out.printf("Subtotal: $%.2f%n", order.getSubtotal());
+            System.out.printf("Tax: $%.2f%n", order.getTax());
+            System.out.printf("Total: $%.2f%n%n", order.getTotal());
         }
     }
+
+    public void start() {
+        while (true) {
+            System.out.println("Welcome to " + name + "!");
+            System.out.println("1. Manager");
+            System.out.println("2. Customer");
+            System.out.println("3. Exit");
+            System.out.print("Please select an option (1-3): ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+
+            if (choice == 1) {
+                handleManagerActions();
+            } else if (choice == 2) {
+                processOrder();
+            } else if (choice == 3) {
+                System.out.println("Thank you for using our system. Goodbye!");
+                break;
+            } else {
+                System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
+    private void handleManagerActions() {
+        while (true) {
+            System.out.println("\nManager Actions:");
+            System.out.println("1. Add New Product");
+            System.out.println("2. Display Product Report");
+            System.out.println("3. Display Customer List");
+            System.out.println("4. Return to Main Menu");
+            System.out.print("Please select an action (1-4): ");
+            int action = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+
+            if (action == 1) {
+                manager.addNewProduct();
+            } else if (action == 2) {
+                manager.displayProductReport();
+            } else if (action == 3) {
+                manager.listCustomers(); // Remove the customers parameter
+            } else if (action == 4) {
+                break;
+            } else {
+                System.out.println("Invalid action. Please try again.");
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
         Store store = new Store("Super Store", 1);
-        store.processOrder();
-        // Call viewPreviousOrders() after processing an order, assuming there is at least one customer
-        if (!store.customers.isEmpty()) {
-            store.viewPreviousOrders(store.customers.get(0));
-        }
+        store.start();
     }
 }
+

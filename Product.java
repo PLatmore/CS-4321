@@ -1,27 +1,68 @@
 package CS;
 
 public class Product {
+    private static int nextId = 1000;
+    
+    private int id;
     private String name;
+    private String manufacturer;
     private double price;
-    private boolean foodItem;
+    private int quantity;
+    private boolean isFoodItem;
 
-    public Product(String name, double price, boolean foodItem) {
+    // Update the constructor to match the one used in the Store class
+    public Product(String name, String manufacturer, double price, int quantity, boolean isFoodItem) {
+        this.id = nextId++;
         this.name = name;
+        this.manufacturer = manufacturer;
         this.price = price;
-        this.foodItem = foodItem;
+        this.quantity = quantity;
+        this.isFoodItem = isFoodItem;
+    }
+    public String getManufacturer() {
+        return manufacturer;
     }
 
-    public String getName() {
-        return name;
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public double getPrice() {
         return price;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     public boolean isFoodItem() {
-        return foodItem;
+        return isFoodItem;
+    }
+
+    public void setFoodItem(boolean isFoodItem) {
+        this.isFoodItem = isFoodItem;
     }
 }
-
 
