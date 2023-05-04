@@ -1,4 +1,4 @@
-package CS;
+package Store;
 
 public class Product {
     private static int nextId = 1000;
@@ -65,4 +65,3 @@ public class Product {
         this.isFoodItem = isFoodItem;
     }
 }
-

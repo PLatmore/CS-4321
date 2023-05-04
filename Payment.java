@@ -1,4 +1,4 @@
-package CS;
+package Store;
 
 public class Payment {
     private Order order;
@@ -21,5 +21,3 @@ public class Payment {
         return order.getSubtotal() + calculateTax();
     }
 }
-
-

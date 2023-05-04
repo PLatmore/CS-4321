@@ -1,4 +1,4 @@
-package CS;
+package Store;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 public class Customer {
     private String name;
     private List<Order> orders = new ArrayList<>();
+    private double storeCredit;
 
     public Customer(String name) {
         this.name = name;
@@ -15,15 +16,28 @@ public class Customer {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void addOrder(Order order) {
+        orders.add(order);
     }
 
     public List<Order> getOrders() {
         return orders;
     }
 
-    public void addOrder(Order order) {
-        orders.add(order);
+    public Order findOrderById(int id) {
+        for (Order order : orders) {
+            if (order.getId() == id) {
+                return order;
+            }
+        }
+        return null;
+    }
+
+    public void addStoreCredit(double credit) {
+        this.storeCredit += credit;
+    }
+
+    public double getStoreCredit() {
+        return storeCredit;
     }
 }
