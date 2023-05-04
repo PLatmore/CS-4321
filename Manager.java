@@ -1,8 +1,12 @@
-package Store;
+package CS;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Manager {
     private Inventory inventory;
@@ -112,6 +116,41 @@ public class Manager {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
+    
+    public void displayOrderStatistics() {
+        int numOfOrders = 0;
+        double totalRevenue = 0;
+        double totalTaxes = 0;
+        double taxRate = 0.05; // Assuming a 5% tax rate, you can replace it with the correct value
+
+        for (Customer customer : customers) {
+            List<Order> orders = customer.getOrders();
+            numOfOrders += orders.size();
+
+            for (Order order : orders) {
+                totalRevenue += order.getTotal();
+                totalTaxes += order.getTax();
+            }
+        }
+
+        double averageOrder = numOfOrders == 0 ? 0 : totalRevenue / numOfOrders;
+
+        double variance = 0;
+        for (Customer customer : customers) {
+            for (Order order : customer.getOrders()) {
+                variance += Math.pow(order.getTotal() - averageOrder, 2);
+            }
+        }
+        variance /= numOfOrders;
+        double standardDeviation = Math.sqrt(variance);
+
+        System.out.println("\n--- Order Statistics ---");
+        System.out.println("Number of Orders: " + numOfOrders);
+        System.out.printf("Total Revenue: $%.2f%n", totalRevenue);
+        System.out.printf("Average Order: $%.2f%n", averageOrder);
+        System.out.printf("Standard Deviation: $%.2f%n", standardDeviation);
+        System.out.printf("Total Taxes Collected: $%.2f%n", totalTaxes);
+    }
 
     public void exportInventoryToFile(String filePath) {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath))) {
@@ -132,5 +171,16 @@ public class Manager {
             System.out.println("Error writing file: " + e.getMessage());
         }
     }
-}
+    public void displayMostPopularProducts() {
+        List<Product> sortedProducts = new ArrayList<>(inventory.getProducts());
+        sortedProducts.sort(Comparator.comparing(Product::getQuantitySold).reversed());
 
+        System.out.println("Most Popular Products (Descending):");
+        System.out.printf("%-25s %-20s %-10s %-10s %-10s\n", "Product Name", "Manufacturer", "Price", "Stock", "Quantity Sold");
+        for (Product product : sortedProducts) {
+            System.out.printf("%-25s %-20s %-10.2f %-10d %-10d\n",
+                    product.getName(), product.getManufacturer(), product.getPrice(),
+                    product.getStock(), product.getQuantitySold());
+        }
+    }
+}

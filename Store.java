@@ -1,4 +1,4 @@
-package Store;
+package CS;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,6 +7,8 @@ public class Store {
     private String name;
     private int id;
     private Scanner scanner;
+    private List<Store> stores;
+
 
     private List<Customer> customers = new ArrayList<>();
     private Inventory inventory;
@@ -18,6 +20,8 @@ public class Store {
         this.inventory = new Inventory();
         this.manager = new Manager(inventory, customers);
         scanner = new Scanner(System.in);
+        stores = new ArrayList<>();
+    
     }
     private void displayAvailableProducts() {
         System.out.println("\n--- Available Products ---");
@@ -211,8 +215,12 @@ public class Store {
             System.out.println("5. Delete Product");
             System.out.println("6. Import Products from File");
             System.out.println("7. Export Inventory to File");
-            System.out.println("8. Return to Main Menu");
-            System.out.print("Please select an action (1-8): ");
+            System.out.println("8. Display Order Statistics");
+            System.out.println("9. Display Most Popular Products");
+            System.out.println("10. Add a new store");
+            System.out.println("11. Display list of stores");
+            System.out.println("12. Return to Main Menu");
+            System.out.print("Please select an action (1-12): ");
             int action = scanner.nextInt();
             scanner.nextLine(); // Consume newline left-over
 
@@ -235,12 +243,51 @@ public class Store {
                 String filePath = scanner.nextLine();
                 manager.exportInventoryToFile(filePath);
             } else if (action == 8) {
-                break;
-            } else {
-                System.out.println("Invalid action. Please try again.");
+                manager.displayOrderStatistics(); // Add this line for displaying order statistics
+                if (action == 9) {
+                    manager.displayMostPopularProducts();
+                } else if (action == 10) {
+                    addNewStore();
+                } else if (action == 11) {
+                    displayStores();
+                } else if (action == 12) {
+                    break;
+                } else {
+                    System.out.println("Invalid action. Please try again.");
+                }
             }
         }
     }
+        public void addNewStore() {
+            System.out.print("Enter the store name: ");
+            String storeName = scanner.nextLine();
+            System.out.print("Enter the store ID: ");
+            int storeId = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+
+            Store newStore = new Store(storeName, storeId);
+            stores.add(newStore);
+        }
+        public String getName() {
+            return name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void displayStores() {
+            if (stores.isEmpty()) {
+                System.out.println("No stores available.");
+            } else {
+                System.out.println("\n--- List of Stores ---");
+                for (Store store : stores) {
+                    System.out.println("Store Name: " + store.getName());
+                    System.out.println("Store ID: " + store.getId());
+                    System.out.println();
+                }
+            }
+}
 
 
 

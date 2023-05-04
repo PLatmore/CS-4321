@@ -1,4 +1,5 @@
-package Store;
+package CS;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,12 @@ public class Order {
 
     public void addProduct(Product product) {
         products.add(product);
+        product.setQuantitySold(product.getQuantitySold() + 1);
         subtotal += product.getPrice();
         tax = subtotal * TAX_RATE;
         total = subtotal + tax;
     }
+
 
     public List<Product> getProducts() {
         return products;

@@ -1,5 +1,4 @@
-package Store;
-
+package CS;
 public class Payment {
     private Order order;
     private boolean useSnap;
