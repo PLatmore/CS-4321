@@ -1,4 +1,4 @@
-package Store;
+package CS;
 
 public class Product {
     private static int nextId = 1000;
@@ -9,6 +9,7 @@ public class Product {
     private double price;
     private int quantity;
     private boolean isFoodItem;
+    private int quantitySold;
 
     // Update the constructor to match the one used in the Store class
     public Product(String name, String manufacturer, double price, int quantity, boolean isFoodItem) {
@@ -48,6 +49,7 @@ public class Product {
         return id;
     }
 
+
     public String getName() {
         return name;
     }
@@ -63,5 +65,15 @@ public class Product {
 
     public void setFoodItem(boolean isFoodItem) {
         this.isFoodItem = isFoodItem;
+    }
+    public int getQuantitySold() {
+        return quantitySold;
+    }
+
+    public void setQuantitySold(int quantitySold) {
+        this.quantitySold = quantitySold;
+    }
+    public int getStock() {
+        return quantity;
     }
 }
