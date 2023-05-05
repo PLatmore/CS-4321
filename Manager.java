@@ -30,7 +30,7 @@ public class Manager {
         double price = scanner.nextDouble();
         System.out.print("Enter product quantity: ");
         int quantity = scanner.nextInt();
-        scanner.nextLine(); // Consume newline left-over
+        scanner.nextLine(); 
         System.out.print("Is this a food item? (yes/no): ");
         boolean isFoodItem = scanner.nextLine().equalsIgnoreCase("yes");
 
@@ -91,7 +91,7 @@ public class Manager {
     public void deleteProduct() {
         System.out.print("Enter the product ID to delete: ");
         int productId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline left-over
+        scanner.nextLine(); 
 
         Product product = inventory.findProductById(productId);
         if (product == null) {
@@ -130,7 +130,7 @@ public class Manager {
         int numOfOrders = 0;
         double totalRevenue = 0;
         double totalTaxes = 0;
-        double taxRate = 0.05; // Assuming a 5% tax rate, you can replace it with the correct value
+        double taxRate = 0.05; 
 
         for (Customer customer : customers) {
             List<Order> orders = customer.getOrders();
