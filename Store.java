@@ -1,4 +1,4 @@
-package CS;
+package Store;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,11 +9,18 @@ public class Store {
     private Scanner scanner;
     private List<Store> stores;
 
-
+    
     private List<Customer> customers = new ArrayList<>();
     private Inventory inventory;
     private Manager manager;
-
+    
+    //main(String[] args)
+    public static void main(String[] args) {
+        Store store = new Store("Mega Overpriced Store", 1);
+        store.start();
+    }
+    
+    //Store(String name, int id)
     public Store(String name, int id) {
         this.name = name;
         this.id = id;
@@ -23,6 +30,8 @@ public class Store {
         stores = new ArrayList<>();
     
     }
+    
+    //displayAvailableProducts()
     private void displayAvailableProducts() {
         System.out.println("\n--- Available Products ---");
         List<Product> availableProducts = inventory.getProducts();
@@ -38,6 +47,8 @@ public class Store {
             }
         }
     }
+    
+    // findCustomerByName(String name)
     private Customer findCustomerByName(String name) {
         for (Customer customer : customers) {
             if (customer.getName().equalsIgnoreCase(name)) {
@@ -47,7 +58,7 @@ public class Store {
         return null;
     }
 
-    
+    // handleProductReturn()
     public void handleProductReturn() {
         System.out.print("Enter your name: ");
         String customerName = scanner.nextLine();
@@ -60,7 +71,7 @@ public class Store {
 
         System.out.print("Enter the order ID of the order containing the product you want to return: ");
         int orderId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline left-over
+        scanner.nextLine(); 
         Order order = customer.findOrderById(orderId);
 
         if (order == null) {
@@ -80,13 +91,14 @@ public class Store {
         if (order.returnProduct(productToReturn)) {
             double returnedAmount = productToReturn.getPrice();
             customer.addStoreCredit(returnedAmount);
-            inventory.addProduct(productToReturn); // Restock the returned product
+            inventory.addProduct(productToReturn); 
             System.out.printf("Product returned successfully. You now have $%.2f in store credit.%n", customer.getStoreCredit());
         } else {
             System.out.println("Failed to return the product.");
         }
     }
     
+    //searchAndDisplayProducts()
     private void searchAndDisplayProducts() {
         System.out.print("Enter a product name or part of a name to search: ");
         String searchTerm = scanner.nextLine();
@@ -106,6 +118,7 @@ public class Store {
         }
     }
     
+    //processOrder()
     public void processOrder() {
     	displayAvailableProducts(); 
     	 System.out.print("Do you want to search for a product? (yes/no): ");
@@ -128,10 +141,10 @@ public class Store {
             String productManufacturer = scanner.nextLine();
             System.out.print("Enter product price: ");
             double productPrice = scanner.nextDouble();
-            scanner.nextLine(); // Consume newline left-over
+            scanner.nextLine(); 
             System.out.print("Enter product quantity: ");
             int productQuantity = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
+            scanner.nextLine(); 
             System.out.print("Is this a food item? (yes/no): ");
             boolean isFoodItem = scanner.nextLine().equalsIgnoreCase("yes");
 
@@ -152,6 +165,7 @@ public class Store {
         printReceipt(customer, order);
     }
 
+    //printReceipt(Customer customer, Order order)
     private void printReceipt(Customer customer, Order order) {
         System.out.println("\n--- Receipt ---");
         System.out.println("Customer Name: " + customer.getName());
@@ -164,7 +178,8 @@ public class Store {
         System.out.printf("Tax: $%.2f%n", order.getTax());
         System.out.printf("Total: $%.2f%n", order.getTotal());
     }
-
+    
+    //viewPreviousOrders(Customer customer)
     public void viewPreviousOrders(Customer customer) {
         System.out.println("\n--- Previous Orders ---");
         for (Order order : customer.getOrders()) {
@@ -178,7 +193,8 @@ public class Store {
             System.out.printf("Total: $%.2f%n%n", order.getTotal());
         }
     }
-
+    
+    //start()
     public void start() {
         while (true) {
             System.out.println("Welcome to " + name + "!");
@@ -188,7 +204,7 @@ public class Store {
             System.out.println("4. Exit");
             System.out.print("Please select an option (1-4): ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
+            scanner.nextLine(); 
 
             if (choice == 1) {
                 handleManagerActions();
@@ -204,7 +220,8 @@ public class Store {
             }
         }
     }
-
+    
+    //handleManagerActions()
     private void handleManagerActions() {
         while (true) {
             System.out.println("\nManager Actions:");
@@ -222,7 +239,7 @@ public class Store {
             System.out.println("12. Return to Main Menu");
             System.out.print("Please select an action (1-12): ");
             int action = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
+            scanner.nextLine(); 
 
             if (action == 1) {
                 manager.addNewProduct();
@@ -243,27 +260,27 @@ public class Store {
                 String filePath = scanner.nextLine();
                 manager.exportInventoryToFile(filePath);
             } else if (action == 8) {
-                manager.displayOrderStatistics(); // Add this line for displaying order statistics
-                if (action == 9) {
-                    manager.displayMostPopularProducts();
-                } else if (action == 10) {
-                    addNewStore();
-                } else if (action == 11) {
-                    displayStores();
-                } else if (action == 12) {
-                    break;
-                } else {
-                    System.out.println("Invalid action. Please try again.");
-                }
+                manager.displayOrderStatistics();
+            } else if (action == 9) {
+                manager.displayMostPopularProducts();
+            } else if (action == 10) {
+                addNewStore();
+            } else if (action == 11) {
+                displayStores();
+            } else if (action == 12) {
+                break;
+            } else {
+                System.out.println("Invalid action. Please try again.");
             }
         }
     }
+    	//addNewStore()
         public void addNewStore() {
             System.out.print("Enter the store name: ");
             String storeName = scanner.nextLine();
             System.out.print("Enter the store ID: ");
             int storeId = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
+            scanner.nextLine(); 
 
             Store newStore = new Store(storeName, storeId);
             stores.add(newStore);
@@ -287,12 +304,5 @@ public class Store {
                     System.out.println();
                 }
             }
-}
-
-
-
-    public static void main(String[] args) {
-        Store store = new Store("Super Store", 1);
-        store.start();
-    }
+        }
 }

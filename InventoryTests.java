@@ -1,9 +1,18 @@
-package CS;
-
+package Store;
 import java.util.List;
 
 public class InventoryTests {
-
+	
+	//public static void main(String[] args) {
+        //testAddProduct();
+        //testFindProductById();
+        //testDeleteProductById();
+       //testSearchProducts();
+        //testInventoryScenario();
+        //System.out.println("All tests finished.");
+    //}
+	
+	//testAddProduct()
     public static void testAddProduct() {
         Inventory inventory = new Inventory();
         Product product = new Product("Apple", "Apple Inc.", 1.99, 10, false);
@@ -12,7 +21,8 @@ public class InventoryTests {
             System.out.println("Failed: testAddProduct");
         }
     }
-
+    
+    //testFindProductById()
     public static void testFindProductById() {
         Inventory inventory = new Inventory();
         Product product = new Product("Apple", "Apple Inc.", 1.99, 10, false);
@@ -22,7 +32,8 @@ public class InventoryTests {
             System.out.println("Failed: testFindProductById");
         }
     }
-
+    
+    //testDeleteProductById()
     public static void testDeleteProductById() {
         Inventory inventory = new Inventory();
         Product product = new Product("Apple", "Apple Inc.", 1.99, 10, false);
@@ -33,7 +44,8 @@ public class InventoryTests {
             System.out.println("Failed: testDeleteProductById");
         }
     }
-
+    
+    //testSearchProducts()
     public static void testSearchProducts() {
         Inventory inventory = new Inventory();
         Product product1 = new Product("Apple", "Apple Inc.", 1.99, 10, false);
@@ -80,12 +92,4 @@ public class InventoryTests {
         }
     }
 
-    public static void main(String[] args) {
-        testAddProduct();
-        testFindProductById();
-        testDeleteProductById();
-        testSearchProducts();
-        testInventoryScenario();
-        System.out.println("All tests finished.");
-    }
 }

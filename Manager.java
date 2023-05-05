@@ -1,5 +1,4 @@
-package CS;
-
+package Store;
 import java.io.*;
 import java.nio.file.*;
 import java.util.List;
@@ -12,13 +11,15 @@ public class Manager {
     private Inventory inventory;
     private List<Customer> customers;
     private Scanner scanner;
-
-  
+    
+    // Manager(Inventory inventory, List<Customer> customers)
     public Manager(Inventory inventory, List<Customer> customers) {
         this.inventory = inventory;
         this.customers = customers;
         scanner = new Scanner(System.in);
     }
+    
+    //addNewProduct()
     public void addNewProduct() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter product name: ");
@@ -36,7 +37,8 @@ public class Manager {
         Product product = new Product(name, manufacturer, price, quantity, isFoodItem);
         inventory.addProduct(product);
     }
-
+    
+    //displayProductReport()
     public void displayProductReport() {
         System.out.println("\n--- Product Report ---");
         for (Product product : inventory.getProducts()) {
@@ -49,7 +51,8 @@ public class Manager {
             System.out.println();
         }
     }
-
+    
+    //listCustomers()
     public void listCustomers() {
         System.out.println("\n--- Customer List ---");
         if (customers.isEmpty()) {
@@ -65,7 +68,8 @@ public class Manager {
             }
         }
     }
-
+    
+    //changeProductPrice()
     public void changeProductPrice() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the product ID to change the price: ");
@@ -82,6 +86,8 @@ public class Manager {
             System.out.println("Product not found.");
         }
     }
+    
+    //deleteProduct()
     public void deleteProduct() {
         System.out.print("Enter the product ID to delete: ");
         int productId = scanner.nextInt();
@@ -95,6 +101,8 @@ public class Manager {
             System.out.println("Product deleted successfully.");
         }
     }
+    
+    //importProductsFromFile(String filePath)
     public void importProductsFromFile(String filePath) {
         try {
             List<String> lines = Files.readAllLines(Paths.get(filePath));
@@ -117,6 +125,7 @@ public class Manager {
         }
     }
     
+    //displayOrderStatistics()
     public void displayOrderStatistics() {
         int numOfOrders = 0;
         double totalRevenue = 0;
@@ -151,7 +160,8 @@ public class Manager {
         System.out.printf("Standard Deviation: $%.2f%n", standardDeviation);
         System.out.printf("Total Taxes Collected: $%.2f%n", totalTaxes);
     }
-
+    
+    //exportInventoryToFile(String filePath)
     public void exportInventoryToFile(String filePath) {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath))) {
             List<Product> products = inventory.getProducts();
@@ -171,6 +181,8 @@ public class Manager {
             System.out.println("Error writing file: " + e.getMessage());
         }
     }
+    
+    //displayMostPopularProducts()
     public void displayMostPopularProducts() {
         List<Product> sortedProducts = new ArrayList<>(inventory.getProducts());
         sortedProducts.sort(Comparator.comparing(Product::getQuantitySold).reversed());

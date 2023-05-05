@@ -1,15 +1,16 @@
-package CS;
+package Store;
 
 import java.util.List;
 
 public class OrderTests {
 
-    public static void main(String[] args) {
-        testAddProduct();
-        testFindProductByName();
-        testReturnProduct();
-    }
-
+    //public static void main(String[] args) {
+        //testAddProduct();
+        //testFindProductByName();
+        //testReturnProduct();
+    //}
+    
+    //createTestOrder()
     public static Order createTestOrder() {
         Order order = new Order();
         Product product1 = new Product("Apple", "Apple Inc.", 1.99, 10, false);
@@ -18,7 +19,8 @@ public class OrderTests {
         order.addProduct(product2);
         return order;
     }
-
+    
+    //testAddProduct()
     public static void testAddProduct() {
         Order order = new Order();
         Product product = new Product("Orange", "Orange Inc.", 0.75, 20, false);
@@ -31,7 +33,8 @@ public class OrderTests {
             System.out.println("Passed: testAddProduct");
         }
     }
-
+    
+    //testFindProductByName()
     public static void testFindProductByName() {
         Order order = createTestOrder();
         Product foundProduct = order.findProductByName("Apple");
@@ -42,11 +45,11 @@ public class OrderTests {
             System.out.println("Passed: testFindProductByName");
         }
     }
-
+    
+    //testReturnProduct()
     public static void testReturnProduct() {
         Order order = createTestOrder();
         Product productToReturn = order.findProductByName("Apple");
-
         boolean isReturned = order.returnProduct(productToReturn);
 
         if (!isReturned || order.getProducts().contains(productToReturn)) {

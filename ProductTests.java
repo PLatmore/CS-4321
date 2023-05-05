@@ -1,21 +1,23 @@
-package CS;
+package Store;
 
 public class ProductTests {
 
-    public static void main(String[] args) {
-        testGetAndSetManufacturer();
-        testGetAndSetPrice();
-        testGetAndSetQuantity();
-        testGetAndSetName();
-        testGetAndSetIsFoodItem();
-        testGetAndSetQuantitySold();
-        testGetStock();
-    }
-
+    //public static void main(String[] args) {
+        //testGetAndSetManufacturer();
+        //testGetAndSetPrice();
+        //testGetAndSetQuantity();
+        //testGetAndSetName();
+        //testGetAndSetIsFoodItem();
+        //testGetAndSetQuantitySold();
+        //testGetStock();
+    //}
+    
+    //createTestProduct()
     public static Product createTestProduct() {
         return new Product("Test Product", "Test Manufacturer", 10.0, 20, true);
     }
-
+    
+    //testGetAndSetManufacturer()
     public static void testGetAndSetManufacturer() {
         Product product = createTestProduct();
         String newManufacturer = "New Test Manufacturer";
@@ -27,7 +29,8 @@ public class ProductTests {
             System.out.println("Passed: testGetAndSetManufacturer");
         }
     }
-
+    
+    //testGetAndSetPrice()
     public static void testGetAndSetPrice() {
         Product product = createTestProduct();
         double newPrice = 12.0;
@@ -39,7 +42,8 @@ public class ProductTests {
             System.out.println("Passed: testGetAndSetPrice");
         }
     }
-
+    
+    //testGetAndSetQuantity()
     public static void testGetAndSetQuantity() {
         Product product = createTestProduct();
         int newQuantity = 25;
@@ -51,7 +55,8 @@ public class ProductTests {
             System.out.println("Passed: testGetAndSetQuantity");
         }
     }
-
+    
+    //testGetAndSetName()
     public static void testGetAndSetName() {
         Product product = createTestProduct();
         String newName = "New Test Product";
@@ -63,7 +68,8 @@ public class ProductTests {
             System.out.println("Passed: testGetAndSetName");
         }
     }
-
+    
+    //testGetAndSetIsFoodItem()
     public static void testGetAndSetIsFoodItem() {
         Product product = createTestProduct();
         boolean newIsFoodItem = false;
@@ -74,8 +80,9 @@ public class ProductTests {
         } else {
             System.out.println("Passed: testGetAndSetIsFoodItem");
         }
-    }
-
+    }	
+    
+    //testGetAndSetQuantitySold()
     public static void testGetAndSetQuantitySold() {
         Product product = createTestProduct();
         int newQuantitySold = 5;
@@ -87,7 +94,8 @@ public class ProductTests {
             System.out.println("Passed: testGetAndSetQuantitySold");
         }
     }
-
+    
+    //testGetStock()
     public static void testGetStock() {
         Product product = createTestProduct();
 
